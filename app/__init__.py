@@ -1,4 +1,4 @@
-from app.app import app, api
+from app.app import api
 from app.handlers import (
     manage,
     errors

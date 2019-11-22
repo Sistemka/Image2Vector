@@ -1,0 +1,14 @@
+dist: xenial
+sudo: false
+language: python
+python:
+  - "3.6"
+
+install:
+  - pipenv sync --dev
+
+stages:
+  - test
+
+script:
+  - pipenv run flake8 .
