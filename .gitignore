@@ -1,3 +1,6 @@
+.DS_Store
+# Created by .ignore support plugin (hsz.mobi)
+### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,3 +105,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.idea/
+.pytest_cache/
+models/
+settings/env
+s_map
+/upload_folder
+temp.py
+.idea/*
