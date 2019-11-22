@@ -9,7 +9,11 @@ def check_mimetype():
     def decorator(func):
         @wraps(func)
         def decorated_function(*args, **kwargs):
-            if request.files.get('image').content_type not in ALLOWED_MIMETYPE:
+            if request.files.get('image') is not None:
+                mimetype = request.files.get('image').content_type
+            else:
+                return func(*args, **kwargs)
+            if mimetype not in ALLOWED_MIMETYPE:
                 response = jsonify({
                     'result': [],
                     'error': True,
