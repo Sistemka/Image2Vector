@@ -21,3 +21,5 @@ basic_args.add_argument('X-SERVICE-NAME', location='headers', required=True, nul
 
 image_args = reqparse.RequestParser(bundle_errors=True, trim=True)
 image_args.add_argument('image', type=FileStorage, location='files', required=True)
+image_args.add_argument('height', type=int, location='args', default=224)
+image_args.add_argument('width', type=int, location='args', default=224)
