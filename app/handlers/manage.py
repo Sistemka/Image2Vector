@@ -24,12 +24,14 @@ class Image2Vector(Resource):
     @check_mimetype()
     def post(self):
         basic_args.parse_args()
-        image = image_args.parse_args()['image']
-        file_name = secure_filename(image.filename)
-        file_path = Path(FILES_DIR, file_name).as_posix()
-        image.save(file_path)
-        res = image2vector(file_path)
-        os.remove(file_path)
+        args = image_args.parse_args()
+        image = args['image']
+        size = (args.get('width'), args.get('height'))
+        image_name = secure_filename(image.filename)
+        image_path = Path(FILES_DIR, image_name).as_posix()
+        image.save(image_path)
+        res = image2vector(image_path=image_path, size=size)
+        os.remove(image_path)
         return jsonify({
             'error': False,
             'result': res
