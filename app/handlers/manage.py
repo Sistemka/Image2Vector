@@ -17,7 +17,7 @@ ns = Namespace(
 )
 
 
-@ns.route('/image2vector')
+@ns.route('/image_to_vector')
 @ns.expect(basic_args)
 class Image2Vector(Resource):
     @ns.expect(image_args)
