@@ -1,8 +1,8 @@
-from app.app import api
+from app.app import app
 from app.handlers import (
     manage,
     errors
 )
 
-manage.register(api)
-errors.register()
+manage.register(app)
+errors.register(app)

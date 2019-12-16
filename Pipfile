@@ -15,11 +15,13 @@ flake8-unused-arguments = "*"
 flake8-builtins = "*"
 
 [packages]
-opencv-python = "*"
 tensorflow = "*"
-flask-restplus = "*"
 gunicorn = "*"
 python-dotenv = "*"
+aiohttp = "*"
+keras = "*"
+aiofiles = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.6"
