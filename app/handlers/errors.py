@@ -1,28 +1,41 @@
-from flask import request
-from werkzeug.exceptions import HTTPException
+from asyncio import CancelledError
 
-from app import api
+from aiohttp import web
 
 
-@api.errorhandler(HTTPException)
-def http_exception(e):
-    response = {
+async def http_exception(request, e):
+    data = {
         'message': str(e),
         'error': True,
         'request_id': request.headers.get('X-REQUEST-ID')
     }
-    return response, getattr(e, 'code', 500)
+    return web.json_response(data=data, status=e.status)
 
 
-@api.errorhandler(Exception)
-def application_exception(e):
-    response = {
+async def application_exception(request, e):
+    data = {
         'message': str(e),
         'error': True,
         'request_id': request.headers.get('X-REQUEST-ID')
     }
-    return response, getattr(e, 'code', 500)
+    return web.json_response(data=data, status=getattr(e, 'code', 500))
 
 
-def register():
-    pass
+def create_error_middleware():
+    @web.middleware
+    async def error_middleware(request, handler):
+        try:
+            response = await handler(request)
+            return response
+        except CancelledError:
+            pass
+        except web.HTTPException as e:
+            return await http_exception(request, e=e)
+        except Exception as e:
+            return await application_exception(request, e=e)
+    return error_middleware
+
+
+def register(app):
+    error_middleware = create_error_middleware()
+    app.middlewares.append(error_middleware)

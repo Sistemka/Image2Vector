@@ -1,5 +1,5 @@
-from .core import image2vector
+from .core import image_to_vector_process
 
 __all__ = [
-    'image2vector'
+    'image_to_vector_process'
 ]
