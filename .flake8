@@ -1,4 +1,5 @@
 [flake8]
+ignore = B305
 exclude =
     .git,
     __pycache__,
