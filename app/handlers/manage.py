@@ -8,7 +8,7 @@ from src import image_to_vector_process
 from settings.path import FILES_DIR
 
 
-async def handler_image_to_vector(request):
+async def handler_image_to_vector_bulk(request):
     reader = await request.multipart()
     field = await reader.next()
     results = []
@@ -32,5 +32,25 @@ async def handler_image_to_vector(request):
     })
 
 
+async def handler_image_to_vector(request):
+    reader = await request.multipart()
+    field = await reader.next()
+    image_path = Path(FILES_DIR, field.filename)
+    with open(image_path, 'wb') as f:
+        while True:
+            chunk = await field.read_chunk()
+            if not chunk:
+                break
+            f.write(chunk)
+    result = image_to_vector_process(image_path).tolist()
+    wrap(os.remove(image_path))
+
+    return web.json_response({
+        'error': False,
+        'result': result
+    })
+
+
 def register(app):
+    app.add_routes([web.post('/image2vector/bulk', handler_image_to_vector_bulk)])
     app.add_routes([web.post('/image2vector', handler_image_to_vector)])
